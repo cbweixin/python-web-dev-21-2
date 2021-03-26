@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-from test1.organizer.models import Tag
+from test1.organizer.models import Tag, Startup
 
 
 class Post(models.Model):
@@ -10,5 +10,6 @@ class Post(models.Model):
     text = models.TextField()
     pub_date = models.DateField()
     tags = models.ManyToManyField(Tag)
+    startups = models.ManyToManyField(Startup)
 
 
