@@ -12,4 +12,8 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag)
     startups = models.ManyToManyField(Startup)
 
+    def __str__(self):
+        date_string = self.pub_date.strftime("%Y-%m-%d")
+        return f"{self.title} on {date_string}"
+
 
