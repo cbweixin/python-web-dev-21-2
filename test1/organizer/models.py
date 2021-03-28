@@ -1,9 +1,11 @@
-from django.db import models
+from django.db.models import (CharField, TextField, DateField, ManyToManyField, Model, EmailField, URLField, ForeignKey,
+                              CASCADE)
+
 
 # Create your models here.
-class Tag(models.Model):
-    name = models.CharField(max_length=31, unique=True)
-    slug = models.CharField(max_length=31, unique=True, help_text='A label for url config')
+class Tag(Model):
+    name = CharField(max_length=31, unique=True)
+    slug = CharField(max_length=31, unique=True, help_text='A label for url config')
 
     class Meta:
         ordering = "name"
@@ -12,14 +14,14 @@ class Tag(models.Model):
         return self.name
 
 
-class Startup(models.Model):
-    name = models.CharField(max_length=31,db_index=True)
-    slug = models.CharField(max_length=31, unique=True,help_text='A label for url config')
-    description = models.TextField()
-    founded_date = models.DateField('date founded')
-    contact = models.EmailField(max_length=255)
-    website = models.URLField()
-    tags = models.ManyToManyField(Tag)
+class Startup(Model):
+    name = CharField(max_length=31, db_index=True)
+    slug = CharField(max_length=31, unique=True, help_text='A label for url config')
+    description = TextField()
+    founded_date = DateField('date founded')
+    contact = EmailField(max_length=255)
+    website = URLField()
+    tags = ManyToManyField(Tag)
 
     class Meta:
         get_latest_by = "founded_date"
@@ -28,17 +30,19 @@ class Startup(models.Model):
     def __str__(self):
         return self.name
 
-class NewsLink(models.Model):
-    title = models.CharField(max_length=31)
-    slug = models.CharField(max_length=31)
-    pub_date = models.DateField('date published')
-    link = models.URLField(max_length=255)
-    startup = models.ForeignKey(Startup, on_delete=models.CASCADE)
 
-    class Meta :
+class NewsLink(Model):
+    title = CharField(max_length=31)
+    slug = CharField(max_length=31)
+    pub_date = DateField('date published')
+    link = URLField(max_length=255)
+    startup = ForeignKey(Startup, on_delete=CASCADE)
+
+    class Meta:
         get_latest_by = "pub_date"
         ordering = ["-pub_date"]
-        unique_together = ("slug","startup")
+        unique_together = ("slug", "startup")
         verbose_name = "news article"
+
     def __str__(self):
         return f"{self.startup} : {self.title}"
