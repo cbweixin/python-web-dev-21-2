@@ -35,4 +35,9 @@ class RootApiView(APIView):
             )
             for (name, url_name) in api_endpoints
         }
+        import sys
+sys.path.append("/home/vagrant/src/pydevd-pycharm.egg")
+
+import pydevd_pycharm
+pydevd_pycharm.settrace('10.0.2.2', port=6789, stdoutToServer=True, stderrToServer=True)
         return Response(data=data, status=HTTP_200_OK)
